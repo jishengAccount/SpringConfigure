@@ -3,42 +3,47 @@
     active:
     - dev
 ---                 
-server:
-  port: 8001
-  
-mybatis:
-  config-location: classpath:mybatis/mybatis.cfg.xml        # mybatis配置文件所在路径
-  type-aliases-package: com.atguigu.springcloud.entities    # 所有Entity别名类所在包
-  mapper-locations:
-  - classpath:mybatis/mapper/**/*.xml                       # mapper映射文件
+  server:
+    port: 8003
     
-spring:
-   application:
-    name: microservicecloud-dept 
-   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型
-    driver-class-name: org.gjt.mm.mysql.Driver              # mysql驱动包
-    url: jdbc:mysql://localhost:3306/cloudDB01              # 数据库名称
-    username: root
-    password: 123456
-    dbcp2:
-      min-idle: 5                                           # 数据库连接池的最小维持连接数
-      initial-size: 5                                       # 初始化连接数
-      max-total: 5                                          # 最大连接数
-      max-wait-millis: 200                                  # 等待连接获取的最大超时时间
+  logging:
+    level:
+      com.jisheng.dao: debug
+    
+  mybatis:
+    config-location: classpath:mybatis/mybatisconf.xml
+    type-aliases-package: com.jisheng.pojo
+    mapper-locations:
+    - classpath:mybatis/mapper/*.xml
+  
+  spring:
+    application:
+     name: springCloudProvider
+    datasource:
+     type: com.alibaba.druid.pool.DruidDataSource
+     driver-class-name: oracle.jdbc.driver.OracleDriver
+     url: jdbc:oracle:thin:@127.0.0.1:1521:ORCL
+     username: scott
+     password: jisheng
+#    jackson:
+#      serialization:
+#        fail-on-empty-beans: false
+        
+  eureka:
+    client:
+      service-url:
+       defaultZone: http://localhost:7001/eureka/ #eureka服务中心的地址
+    instance:
+      prefer-ip-address: true                     #优先显示ip
+#配置点击之后的项目info信息
+  info:
+   app.name: atguigu-microservicecloud
+   company.name: www.atguigu.com
+   build.artifactId: $project.artifactId$
+   build.version: $project.version$
       
-eureka:
-  client: #客户端注册进eureka服务列表内
-    service-url: 
-      #defaultZone: http://localhost:7001/eureka
-       defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/      
-  instance:
-    instance-id: microservicecloud-dept8001
-    prefer-ip-address: true     #访问路径可以显示IP地址     
+     
+     
+     
+   
  
-info: 
-  app.name: atguigu-microservicecloud
-  company.name: www.atguigu.com
-  build.artifactId: $project.artifactId$
-  build.version: $project.version$
-
